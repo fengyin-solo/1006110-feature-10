@@ -24,6 +24,17 @@
       </span>
     </p>
 
+    <section class="sync-banner" :class="{ aligned: !detainedMismatch }">
+      <div>
+        <strong>渣土车滞留隐患同步：</strong>
+        渣土运输单滞留在场 {{ detainedOrders }} 车 · 隐患台账待整改 {{ openHazards }} 条
+        <span v-if="detainedMismatch" class="warn-text">——条数对不上，以现场签认记录为准</span>
+        <span v-else class="ok-text">——两边条数一致</span>
+      </div>
+      <button class="btn mini" type="button" @click="runReconcile">按现场签认核对</button>
+    </section>
+    <p v-if="reconcileMessage" class="page-desc">{{ reconcileMessage }}</p>
+
     <form class="filter-bar" @submit.prevent="reload">
       <label v-for="field in filterFields" :key="field" class="filter-item">
         <span>{{ field }}</span>
@@ -37,13 +48,15 @@
       <thead>
         <tr>
           <th v-for="column in columns" :key="column">{{ column }}</th>
+          <th>来源运输单</th>
           <th>当前状态</th>
           <th>可执行动作</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="row in rows" :key="String(row.id)">
+        <tr v-for="row in rows" :key="String(row.id)" :class="{ 'row-synced': isSynced(row), 'row-danger': isSynced(row) && row.pending }">
           <td v-for="column in columns" :key="column">{{ row[column] ?? '—' }}</td>
+          <td>{{ row['来源运输单'] ? `${row['来源运输单']}${row['滞留签认号'] ? ' / ' + row['滞留签认号'] : ''}` : '巡检自录' }}</td>
           <td>{{ row.status }}</td>
           <td class="row-actions">
             <button
@@ -58,7 +71,7 @@
           </td>
         </tr>
         <tr v-if="!rows.length">
-          <td :colspan="columns.length + 2" class="empty-state">暂无安全巡检数据，可先登记巡检记录</td>
+          <td :colspan="columns.length + 3" class="empty-state">暂无安全巡检数据，可先登记巡检记录</td>
         </tr>
       </tbody>
     </table>
@@ -79,6 +92,7 @@ import {
   moduleMeta,
   runAction as applyAction,
 } from '@/api/local-service'
+import { isDetained, muckOrders, reconcileFromSafety } from '@/api/muck-service'
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('safety')
@@ -90,14 +104,35 @@ const stats = [{"label": "待巡检区域", "value": 0}, {"label": "待整改隐
 const rows = ref<EntryRow[]>([])
 const total = ref(0)
 const errorMessage = ref('')
+const reconcileMessage = ref('')
 const filters = ref<Record<string, string>>({})
 const filterFields = columns.slice(0, 3)
+
+function isSynced(row: EntryRow): boolean {
+  return String(row['来源模块'] ?? '') === '渣土外运'
+}
+
+// 以现场签认的运输单为准：滞留有签认的车数，对比台账里仍待整改的同步隐患条数。
+const detainedOrders = computed(() =>
+  muckOrders().filter((row) => isDetained(row) && String(row['滞留签认'] ?? '') !== '').length,
+)
+const openHazards = computed(() =>
+  rows.value.filter((row) => isSynced(row) && String(row.status) !== '已闭环').length,
+)
+const detainedMismatch = computed(() => detainedOrders.value !== openHazards.value)
+
 const statusSummary = computed(() =>
   statuses.map((status: string) => ({
     status,
     count: rows.value.filter((row) => String(row.status) === status).length,
   })),
 )
+
+function runReconcile() {
+  const report = reconcileFromSafety()
+  reconcileMessage.value = report.message
+  reload()
+}
 
 function resetFilters() {
   filters.value = {}

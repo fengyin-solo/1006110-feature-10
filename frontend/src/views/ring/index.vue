@@ -63,6 +63,46 @@
       </tbody>
     </table>
 
+    <section class="checklist">
+      <header class="checklist-head">
+        <h3>出土方量核对清单（确认消纳后自动回写）</h3>
+        <p class="page-desc">已消纳方量由「已消纳」运输单实时汇总，环次不另存一份，环次读到的数与渣土外运看板同源。</p>
+      </header>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>环号</th>
+            <th>环次出土方量(m³)</th>
+            <th>已消纳方量(m³)</th>
+            <th>差值(m³)</th>
+            <th>核对结果</th>
+            <th>核对状态</th>
+            <th>最近消纳</th>
+            <th>最近签认号</th>
+            <th>已消纳运输单</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in checklist" :key="String(item.ring['环号'])" :class="{ 'row-danger': item.result === '已消纳超出土' }">
+            <td>{{ item.ring['环号'] }}</td>
+            <td>{{ item.plannedVolume }}</td>
+            <td>{{ item.disposedVolume }}</td>
+            <td :class="item.diff === 0 ? 'ok-text' : item.diff > 0 ? 'warn-text' : ''">{{ item.diff }}</td>
+            <td>{{ item.result }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.lastConfirmTime || '—' }}</td>
+            <td>{{ item.ring['最近消纳签认号'] || '—' }}</td>
+            <td>
+              <span v-for="order in item.orders.filter((row) => row.status === '已消纳')" :key="String(order.id)" class="chip">
+                {{ order['运输单号'] }}（{{ order['渣土方量'] }}m³/{{ order['消纳签认号'] }}）
+              </span>
+              <span v-if="!item.orders.some((row) => row.status === '已消纳')" class="dim">暂无</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
     <footer class="page-foot">
       <span>共 {{ total }} 条掘进环次记录</span>
       <span v-if="errorMessage" class="error-text">{{ errorMessage }}</span>
@@ -79,6 +119,7 @@ import {
   moduleMeta,
   runAction as applyAction,
 } from '@/api/local-service'
+import { ringChecklist } from '@/api/muck-service'
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('ring')
@@ -92,6 +133,12 @@ const total = ref(0)
 const errorMessage = ref('')
 const filters = ref<Record<string, string>>({})
 const filterFields = columns.slice(0, 3)
+// 本地存储不是响应式的，用版本计数驱动：消纳确认后回到本页 reload 会让清单重算。
+const dataVersion = ref(0)
+const checklist = computed(() => {
+  void dataVersion.value
+  return ringChecklist()
+})
 const statusSummary = computed(() =>
   statuses.map((status: string) => ({
     status,
@@ -128,6 +175,7 @@ function reload() {
     const payload = listEntries(meta.key, filters.value)
     rows.value = payload.items
     total.value = payload.total
+    dataVersion.value += 1
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : '掘进环次列表读取失败'
   }

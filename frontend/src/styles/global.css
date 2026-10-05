@@ -35,3 +35,60 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+
+/* 渣土外运看板 */
+.role-switch { display: flex; gap: 8px; align-items: flex-end; font-size: 12px; color: var(--muted); }
+.role-switch select { padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px; }
+.identity-tip { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+.tab-row { display: flex; gap: 6px; margin-bottom: 10px; }
+.tab-btn { border: 1px solid var(--border); background: #fff; border-radius: 6px 6px 0 0; padding: 6px 14px; cursor: pointer; font-size: 13px; }
+.tab-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+.stat-card.danger { border-color: #f0a99c; background: #fdf3f1; }
+.stat-card.danger .stat-value { color: #b42318; }
+.period-strip { display: flex; gap: 10px; overflow-x: auto; margin-bottom: 14px; }
+.period-card { min-width: 190px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; }
+.period-card header { font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+.period-card p { display: flex; flex-direction: column; gap: 2px; margin: 0; font-size: 12px; }
+.period-card .dim { color: var(--muted); }
+.board-columns { display: flex; gap: 12px; align-items: flex-start; overflow-x: auto; padding-bottom: 8px; }
+.site-column { flex: 1 0 250px; min-width: 250px; background: #eef2f7; border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
+.site-head { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 13px; margin-bottom: 6px; }
+.site-count { color: var(--muted); font-size: 12px; }
+.detained-count { margin: 0 0 6px; font-size: 12px; }
+.order-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.order-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px; }
+.order-card.detained { border-color: #d92d20; background: #fef3f2; order: -1; }
+.order-card.disabled { opacity: 0.92; }
+.order-line { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 3px; }
+.order-line.muted { color: var(--muted); }
+.order-no { font-weight: 600; }
+.order-status { font-size: 11px; border-radius: 999px; padding: 1px 8px; background: #e2e8f0; }
+.order-status.danger { background: #fee4e2; color: #b42318; }
+.order-status.ok { background: #d1fadf; color: #027a48; }
+.tag { font-size: 11px; border-radius: 4px; padding: 0 6px; margin-left: 6px; }
+.tag.warn { background: #fef0c7; color: #b54708; }
+.card-actions { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+.card-actions.blocked { color: var(--muted); font-size: 11px; }
+.danger-link { color: #b42318 !important; }
+.assign-form { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+.assign-form input { padding: 4px 6px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; }
+.assign-actions { display: flex; gap: 6px; }
+.btn.mini { padding: 3px 10px; font-size: 12px; }
+.empty-column { color: var(--muted); font-size: 12px; text-align: center; padding: 12px 0; }
+.danger-text { color: #b42318; }
+.warn-text { color: #b54708; }
+.ok-text { color: #027a48; }
+.dim { color: var(--muted); font-size: 12px; }
+.row-danger td { background: #fef3f2; }
+.row-synced td { background: #fffaeb; }
+.row-synced.row-danger td { background: #fef3f2; }
+.sync-banner { display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 1px solid #f0d98c; background: #fffaeb; border-radius: 8px; padding: 8px 12px; margin-bottom: 10px; font-size: 13px; }
+.sync-banner.aligned { border-color: #a6f4c5; background: #ecfdf3; }
+.checklist { margin-top: 18px; }
+.checklist-head h3 { margin: 0 0 4px; font-size: 15px; }
+.chip { display: inline-block; background: #eef2f7; border-radius: 4px; padding: 1px 6px; margin: 1px 4px 1px 0; font-size: 11px; white-space: nowrap; }
+.migration-note { margin-top: 16px; border: 1px dashed var(--border); border-radius: 8px; background: #fff; padding: 10px 14px; font-size: 12px; color: var(--muted); }
+.migration-note header { font-weight: 600; color: #1f2937; margin-bottom: 4px; }
+.migration-note ul { margin: 0; padding-left: 18px; }
+.migration-note li { margin-bottom: 2px; }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
