@@ -24,6 +24,10 @@
       </span>
     </p>
 
+    <p class="reconcile-bar">
+      出土方量核对：「已消纳方量」由渣土外运看板确认消纳后按环号自动回写，与看板同源，全站只此一个数。
+    </p>
+
     <form class="filter-bar" @submit.prevent="reload">
       <label v-for="field in filterFields" :key="field" class="filter-item">
         <span>{{ field }}</span>
@@ -82,7 +86,7 @@ import {
 import type { EntryRow } from '@/data/types'
 
 const meta = moduleMeta('ring')
-const columns = ["环号", "起始里程", "掘进速度", "总推力", "刀盘扭矩", "出土方量", "掘进班组", "环次状态"]
+const columns = ["环号", "起始里程", "掘进速度", "总推力", "刀盘扭矩", "出土方量", "已消纳方量", "掘进班组", "环次状态"]
 const actions = ["开始掘进", "确认完成", "申请纠偏"]
 const statuses = ["待掘进", "掘进中", "已贯通", "已纠偏"]
 const stats = [{"label": "本月掘进环数", "value": 0}, {"label": "平均掘进速度", "value": 0}, {"label": "纠偏环数", "value": 0}]

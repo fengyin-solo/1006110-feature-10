@@ -35,3 +35,30 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .error-text { color: #b42318; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 10px; font-size: 12px; color: var(--muted); }
 .legend-item { background: #eef2f7; border-radius: 999px; padding: 2px 10px; }
+
+/* 渣土外运看板 */
+.identity { font-size: 13px; color: var(--muted); align-self: center; }
+.notice-bar { background: #fff8e6; border: 1px solid #f0d48a; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 12px; }
+.notice-bar ul { margin: 4px 0 0; padding-left: 18px; }
+.shift-strip { display: flex; gap: 12px; margin-bottom: 12px; overflow-x: auto; }
+.shift-card { min-width: 150px; flex: 1; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+.shift-volume { display: block; color: var(--muted); font-size: 12px; }
+.reconcile-bar { background: #eef6ee; border: 1px solid #bfe3bf; border-radius: 8px; padding: 8px 12px; font-size: 12px; margin: 0 0 12px; }
+.reconcile-bar.warn { background: #fdecea; border-color: #f5b5ae; color: #b42318; }
+.board-columns { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; overflow-x: auto; }
+.board-column { flex: 1; min-width: 230px; background: #f0f3f8; border: 1px solid var(--border); border-radius: 8px; padding: 10px; }
+.column-head { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; justify-content: space-between; font-size: 13px; margin-bottom: 8px; }
+.retained-badge { background: #b42318; color: #fff; border-radius: 999px; padding: 1px 8px; font-size: 12px; }
+.muck-card { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; font-size: 13px; }
+.muck-card.retained { border-color: #b42318; box-shadow: 0 0 0 1px #b42318; background: #fff5f4; }
+.muck-card.disposed { opacity: 0.6; }
+.card-head { display: flex; justify-content: space-between; align-items: baseline; }
+.card-status { font-size: 12px; color: var(--muted); }
+.muck-card.retained .card-status { color: #b42318; font-weight: 600; }
+.card-line { margin: 4px 0 0; color: #374151; font-size: 12px; }
+.card-actions { display: flex; gap: 10px; margin-top: 8px; }
+.card-edit { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.card-edit input { flex: 1; min-width: 90px; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; font-size: 12px; }
+.ledger-title { margin: 16px 0 8px; font-size: 15px; }
+.notice-text { color: #067647; }
+.link:disabled, .btn:disabled { opacity: 0.5; cursor: not-allowed; }

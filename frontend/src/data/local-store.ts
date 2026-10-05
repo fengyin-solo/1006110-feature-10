@@ -48,6 +48,20 @@ export function saveRows(key: string, rows: EntryRow[]): void {
   }
 }
 
+/**
+ * 多模块原子落库：确认消纳这类联动写（渣土外运 + 掘进环次 + 安全巡检）必须整套生效。
+ * 先序列化、再写 localStorage、最后才换内存快照——任何一步抛错，内存与存储都保持原样，
+ * 调用方捕获后即可宣告「整套撤回」，不会落下一半。
+ */
+export function saveAll(entries: Record<string, EntryRow[]>): void {
+  const next = { ...allRows(), ...entries }
+  const serialized = JSON.stringify(next)
+  if (typeof window !== 'undefined' && window.localStorage) {
+    window.localStorage.setItem(STORAGE_KEY, serialized)
+  }
+  cache = next
+}
+
 export function resetRows(key: string): EntryRow[] {
   const rows = clone(SEED_ROWS[key] ?? [])
   saveRows(key, rows)
